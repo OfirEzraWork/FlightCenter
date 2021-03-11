@@ -5,18 +5,232 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlightCenterDBGenerator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="618.103" Width="602.155"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
-        TextElement.FontSize="13"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}">
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+    <Window.Resources>
+        <local:TextBoxValueConverter x:Key="vc"/>
+    </Window.Resources>
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <local:DataRow x:Name="AirlineCompanies" RowText="Airline Companies"/>
-        </StackPanel>
+        <Grid Margin="75 50">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" MinHeight="30"/>
+                <RowDefinition Height="Auto" MinHeight="30"/>
+                <RowDefinition Height="Auto" MinHeight="30"/>
+                <RowDefinition Height="Auto" MinHeight="30"/>
+                <RowDefinition Height="Auto" MinHeight="30"/>
+                <RowDefinition Height="Auto" MinHeight="30"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.75*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.75*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="3"
+                           Text="Random"
+                           HorizontalAlignment="Center" Margin="0 0 0 5"
+                           FontSize="9" VerticalAlignment="Bottom"/>
+
+            <!--Airline Companies Row-->
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                           Text="Airline Companies:"
+                           FontSize="12" VerticalAlignment="Center"/>
+
+            <TextBox Grid.Row="1" Grid.Column="2" x:Name="AirlineCompanies"
+                     TextAlignment="Center" 
+                     VerticalAlignment="Center">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Text" Value="{Binding AirlineCompanies.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=AirlineCompaniesRandom, Path=IsChecked}" Value="True">
+                                <Setter Property="Text" Value="{Binding AirlineCompanies.Range, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                ValidatesOnDataErrors=True}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+
+            <CheckBox Grid.Row="1" Grid.Column="3" x:Name="AirlineCompaniesRandom"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding AirlineCompanies.IsRandom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!--End of Airline Companies Row-->
+
+            <!--Customers Row-->
+            <TextBlock Grid.Row="2" Grid.Column="0"
+                            Text="Customers:"
+                            FontSize="12" VerticalAlignment="Center"/>
+
+            <TextBox Grid.Row="2" Grid.Column="2" x:Name="Customers"
+                     TextAlignment="Center"
+                     VerticalAlignment="Center">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Text" Value="{Binding Customers.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=CustomersRandom, Path=IsChecked}" Value="True">
+                                <Setter Property="Text" Value="{Binding Customers.Range, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                    ValidatesOnDataErrors=True}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+
+            <CheckBox Grid.Row="2" Grid.Column="3" x:Name="CustomersRandom"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding Customers.IsRandom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!--End of Customers Row-->
+
+            <!--Administrators Row-->
+            <TextBlock Grid.Row="3" Grid.Column="0"
+                            Text="Administrators:"
+                            FontSize="12" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="3" Grid.Column="2" x:Name="Administrators"
+                     TextAlignment="Center"
+                     VerticalAlignment="Center">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Text" Value="{Binding Administrators.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=AdministratorsRandom, Path=IsChecked}" Value="True">
+                                <Setter Property="Text" Value="{Binding Administrators.Range, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                    ValidatesOnDataErrors=True}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+            <CheckBox Grid.Row="3" Grid.Column="3" x:Name="AdministratorsRandom"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding Administrators.IsRandom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!--End of Administrators Row-->
+
+            <!--Flights Per Company Row-->
+            <TextBlock Grid.Row="4" Grid.Column="0"
+                            Text="Flights Per Company:"
+                            FontSize="12" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="4" Grid.Column="2" x:Name="FlightsPerCompany"
+                     TextAlignment="Center"
+                     VerticalAlignment="Center">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Text" Value="{Binding FlightsPerCompany.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=FlightsPerCompanyRandom, Path=IsChecked}" Value="True">
+                                <Setter Property="Text" Value="{Binding FlightsPerCompany.Range, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                    ValidatesOnDataErrors=True}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+
+            <CheckBox Grid.Row="4" Grid.Column="3" x:Name="FlightsPerCompanyRandom"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding FlightsPerCompany.IsRandom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!--End of Flights Per Company Row-->
+
+            <!--Tickets Per Customer Row-->
+            <TextBlock Grid.Row="5" Grid.Column="0"
+                            Text="Tickets Per Customer:"
+                            FontSize="12" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="5" Grid.Column="2" x:Name="TicketsPerCustomer"
+                     TextAlignment="Center"
+                     VerticalAlignment="Center">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Text" Value="{Binding TicketsPerCustomer.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=TicketsPerCustomerRandom, Path=IsChecked}" Value="True">
+                                <Setter Property="Text" Value="{Binding TicketsPerCustomer.Range, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                    ValidatesOnDataErrors=True}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+            <CheckBox Grid.Row="5" Grid.Column="3" x:Name="TicketsPerCustomerRandom"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding TicketsPerCustomer.IsRandom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!--End of Tickets Per Customer Row-->
+
+            <!--Countries Row-->
+            <TextBlock Grid.Row="6" Grid.Column="0"
+                            Text="Countries:"
+                            FontSize="12" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="6" Grid.Column="2" x:Name="Countries"
+                     TextAlignment="Center"
+                     VerticalAlignment="Center">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Text" Value="{Binding Countries.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                            ValidatesOnDataErrors=True}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=CountriesRandom, Path=IsChecked}" Value="True">
+                                <Setter Property="Text" Value="{Binding Countries.Range, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                    ValidatesOnDataErrors=True}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+            <CheckBox Grid.Row="6" Grid.Column="3" x:Name="CountriesRandom"
+                      HorizontalAlignment="Center"
+                      IsChecked="{Binding Countries.IsRandom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!--End of Countries Row-->
+
+
+            <Button Grid.Row="8" Grid.Column="2"
+                    Content="Generate" Height="Auto"
+                    VerticalContentAlignment="Center"
+                    Command="{Binding GenerateButtonClick}"
+                    IsEnabled="{Binding IsIdle, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    />
+            <Button Grid.Row="10" Grid.Column="2"
+                    Content="Clear" Height="Auto"
+                    VerticalContentAlignment="Center"
+                    Command="{Binding ClearButtonClick}"
+                    IsEnabled="{Binding IsIdle, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    />
+            <Border Grid.Column="0" Grid.Row="12"
+                    Grid.ColumnSpan="5" Grid.RowSpan="3" BorderBrush="#FF68A7DC" CornerRadius="5" BorderThickness="3">
+                <TextBox x:Name="StatusTextViewer" Text="{Binding StatusText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         VerticalScrollBarVisibility="Auto"/>
+            </Border>
+            <ProgressBar x:Name="ProgressBar" 
+                         Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="5"
+                         Height="10"
+                         Margin="0 0 0 0"
+                         materialDesign:TransitionAssist.DisableTransitions="True"
+                         Value="{Binding ProgressBarValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Minimum="0"
+                         Maximum="6"/>
+        </Grid>
     </Grid>
 </Window>

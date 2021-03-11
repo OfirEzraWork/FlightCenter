@@ -33,6 +33,15 @@ namespace FlightCenter.Facades
             return _flightDAO.GetFlightsByDepatrureDate(departureDate);
         }
 
+        public IList<FlightWithNames> GetUpcomingDepatrures()
+        {
+            return _flightDAO.GetUpcomingDepartures();
+        }
+        public IList<FlightWithNames> GetUpcomingDepatrures(string key, string value)
+        {
+            return _flightDAO.GetUpcomingDepartures(key, value);
+        }
+
         public IList<Flight> GetFlightsByDestinationCountry(int countryID)
         {
             return _flightDAO.GetFlightsByDestinationCountry(countryID);
@@ -42,10 +51,19 @@ namespace FlightCenter.Facades
         {
             return _flightDAO.GetFlightsByLandingDate(landingDate);
         }
+        public IList<FlightWithNames> GetUpcomingLandings()
+        {
+            return _flightDAO.GetUpcomingLandings();
+        }
+        public IList<FlightWithNames> GetUpcomingLandings(string key, string value)
+        {
+            return _flightDAO.GetUpcomingLandings(key, value);
+        }
 
         public IList<Flight> GetFlightsByOriginCountry(int countryID)
         {
             return _flightDAO.GetFlightsByOriginCountry(countryID);
         }
+
     }
 }

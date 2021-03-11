@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FlightCenter;
-using FlightCenter.POCO;
 using System.Configuration;
 using FlightCenter.Facades;
 using System.Collections.Generic;

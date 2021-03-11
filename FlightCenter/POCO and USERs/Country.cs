@@ -13,7 +13,11 @@ namespace FlightCenter
         public Country()
         {
         }
-
+        public Country(string countryName)
+        {
+            ID = -1;
+            CountryName = countryName;
+        }
         public Country(int iD, string countryName)
         {
             ID = iD;

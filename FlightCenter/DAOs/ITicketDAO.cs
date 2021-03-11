@@ -12,5 +12,6 @@ namespace FlightCenter.DAOs
         IList<Ticket> GetTicketsByAirline(AirlineCompany airline);
         IList<Ticket> GetTicketsByFlight(Flight FlightID);
         Ticket GetTicketByFlightAndCustomerID(int flightID, int CustomerID);
+        void RemoveAllByCustomerID(int CustomerID);
     }
 }

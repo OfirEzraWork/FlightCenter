@@ -23,6 +23,8 @@ namespace FlightCenterDBGenerator
         public MainWindow()
         {
             InitializeComponent();
+            ViewModel vm = new ViewModel();
+            this.DataContext = vm;
         }
     }
 }

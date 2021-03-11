@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlightCenter.DAOs;
-using FlightCenter.POCO;
 
 namespace FlightCenter.Facades
 {
     public class LoggedInAdministratorFacade : AnonymousUserFacade, ILoggedInAdministratorFacade
     {
-        private AdministratorDAOMSSQL _administratorDAO = new AdministratorDAOMSSQL();
+        AdministratorDAOMSSQL _administratorDAO = new AdministratorDAOMSSQL();
         public LoggedInAdministratorFacade()
         {
         }
@@ -52,6 +51,12 @@ namespace FlightCenter.Facades
             {
                 throw new UserDoesNotExistsException();
             }
+            IList<Flight> flights = _flightDAO.GetFlightsByAirline(airline);
+            foreach (Flight f in flights)
+            {
+                _ticketDAO.RemoveAllByFlightID(f.ID);
+            }
+            _flightDAO.RemoveAllByAirlineCompany(airline);
             _airlineDAO.Remove(airline);
         }
 
@@ -61,6 +66,7 @@ namespace FlightCenter.Facades
             {
                 throw new UserDoesNotExistsException();
             }
+            _ticketDAO.RemoveAllByCustomerID(customer.ID);
             _customerDAO.Remove(customer);
         }
 
@@ -98,6 +104,23 @@ namespace FlightCenter.Facades
                 throw new UserDoesNotExistsException();
             }
             _administratorDAO.Update(administrator);
+        }
+
+        public void CreateNewCountry(LoginToken<Administrator> token, Country country)
+        {
+            if (_countryDAO.GetCountryByName(country.CountryName) != null)
+            {
+                throw new CountryAlreadyExistsInDatabaseException();
+            }
+            _countryDAO.Add(country);
+        }
+        public IList<Country> GetAllCountries(LoginToken<Administrator> token)
+        {
+            return _countryDAO.GetAll();
+        }
+        public void RemoveAllAdmins(LoginToken<Administrator> token)
+        {
+            _administratorDAO.RemoveAll();
         }
     }
 }

@@ -6,7 +6,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FlightCenter.POCO;
 
 namespace FlightCenter.DAOs
 {
@@ -124,6 +123,20 @@ namespace FlightCenter.DAOs
                     $" USER_NAME = '{t.Username}'," +
                     $" PASSWORD = '{t.Password}'" +
                     $" WHERE Admins.ID = {t.ID}", conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    cmd.ExecuteReader();
+                    cmd.Connection.Close();
+                }
+            }
+        }
+
+        public void RemoveAll()
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand($"DELETE FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Admins WHERE NOT USER_NAME='admin'", conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection.Open();

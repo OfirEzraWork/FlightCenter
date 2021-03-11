@@ -1,5 +1,4 @@
 ﻿using FlightCenter.Facades;
-using FlightCenter.POCO;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,7 +20,7 @@ namespace FlightCenter
         private FlyingCenterSystem()
         {
             LoginService = new LoginService();
-            Task.Run(StartMovingTimer);
+            //Task.Run(StartMovingTimer);
         }
         public static FlyingCenterSystem GetFlyingCenterSystem()
         {

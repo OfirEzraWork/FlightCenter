@@ -19,5 +19,11 @@ namespace FlightCenter.DAOs
         IList<Flight> GetFlightsByAirline(AirlineCompany airline);
         void BuyTicket(Flight f);
         void CancelTicket(Ticket t);
+        void RemoveAllByAirlineCompany(AirlineCompany airline);
+        IList<FlightWithNames> GetUpcomingDepartures(string key, string value);
+        IList<FlightWithNames> GetUpcomingDepartures();
+        IList<FlightWithNames> GetUpcomingLandings(string key, string value);
+        IList<FlightWithNames> GetUpcomingLandings();
+
     }
 }

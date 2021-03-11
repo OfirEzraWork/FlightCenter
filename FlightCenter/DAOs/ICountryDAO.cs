@@ -8,6 +8,6 @@ namespace FlightCenter.DAOs
 {
     public interface ICountryDAO : IBasicDB<Country>
     {
-
+        Country GetCountryByName(string name);
     }
 }

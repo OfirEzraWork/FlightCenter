@@ -60,6 +60,7 @@
     <Compile Include="DAOs\TicketDAOMSSQL.cs" />
     <Compile Include="DAOs\TicketsHistoryDAOMSSQL.cs" />
     <Compile Include="Facades\AnonymousUserFacade.cs" />
+    <Compile Include="Exceptions\CountryAlreadyExistsInDatabaseException.cs" />
     <Compile Include="Facades\FacadeBase.cs" />
     <Compile Include="Facades\IAnonymousUserFacade.cs" />
     <Compile Include="Facades\ILoggedInAdministratorFacade.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="POCO and USERs\Country.cs" />
     <Compile Include="POCO and USERs\Customer.cs" />
     <Compile Include="POCO and USERs\Flight.cs" />
+    <Compile Include="POCO and USERs\FlightWithNames.cs" />
     <Compile Include="POCO and USERs\IPoco.cs" />
     <Compile Include="POCO and USERs\IUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

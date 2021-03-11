@@ -108,7 +108,7 @@ namespace FlightCenter.DAOs
             {
                 using (SqlCommand cmd = new SqlCommand($"SELECT * FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Tickets" +
                                                        $" JOIN {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Flights ON Tickets.FLIGHT_ID = Flights.ID" +
-                                                       $" JOIN {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}AirlineCompanies ON AirlineCompanies.ID = Flights.AIRLINE_COMPANY_ID", conn))
+                                                       $" JOIN {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}AirlineCompanies ON AirlineCompanies.ID = Flights.AIRLINE_COMPANY_ID WHERE AirlineCompanies.ID = {airline.ID} ", conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection.Open();
@@ -171,6 +171,20 @@ namespace FlightCenter.DAOs
             }
         }
 
+        public void RemoveAllByCustomerID(int CustomerID)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand($"DELETE FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Tickets WHERE CUSTOMER_ID={CustomerID}", conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    cmd.ExecuteReader();
+                    cmd.Connection.Close();
+                }
+            }
+        }
+
         public void Update(Ticket t)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
@@ -179,6 +193,20 @@ namespace FlightCenter.DAOs
                     $" FLIGHT_ID = {t.FlightID}," +
                     $" CUSTOMER_ID = {t.CustomerID}" +
                     $" WHERE Tickets.ID = {t.ID}", conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    cmd.ExecuteReader();
+                    cmd.Connection.Close();
+                }
+            }
+        }
+
+        public void RemoveAll()
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand($"DELETE FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Tickets", conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection.Open();

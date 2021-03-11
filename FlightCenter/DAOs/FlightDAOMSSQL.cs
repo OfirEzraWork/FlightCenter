@@ -59,6 +59,157 @@ namespace FlightCenter.DAOs
             }
             return null;
         }
+        public IList<FlightWithNames> GetUpcomingDepartures()
+        {
+            string preText = ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString;
+            IList<FlightWithNames> flights = new List<FlightWithNames>();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(
+                        $"SELECT {preText}Flights.ID, Origin.COUNTRY_NAME AS ORIGIN_COUNTRY, Destination.COUNTRY_NAME AS DESTINATION_COUNTRY, {preText}Flights.DEPARTURE_TIME, {preText}Flights.LANDING_TIME, {preText}AirlineCompanies.AIRLINE_NAME " +
+                        $"FROM {preText}Flights " +
+                        $"LEFT JOIN {preText}AirlineCompanies ON {preText}Flights.AIRLINE_COMPANY_ID = {preText}AirlineCompanies.ID " +
+                        $"LEFT JOIN {preText}Countries AS Origin ON {preText}Flights.ORIGIN_COUNTRY_ID = Origin.ID " +
+                        $"LEFT JOIN {preText}Countries AS Destination ON {preText}Flights.DESTINATION_COUNTRY_ID = Destination.ID " +
+                        $"WHERE DATEDIFF(HOUR, '{DateTime.Now.ToString(dateFormat)}', DEPARTURE_TIME) <= 12 AND DATEDIFF(HOUR, '{DateTime.Now.ToString(dateFormat)}', DEPARTURE_TIME) > 0 " +
+                        $"ORDER BY {preText}Flights.DEPARTURE_TIME;"
+                        , conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        FlightWithNames c = new FlightWithNames((int)reader["ID"], (string)reader["AIRLINE_NAME"], (string)reader["ORIGIN_COUNTRY"], (string)reader["DESTINATION_COUNTRY"], (DateTime)reader["DEPARTURE_TIME"], (DateTime)reader["LANDING_TIME"]);
+                        flights.Add(c);
+                    }
+                    cmd.Connection.Close();
+                }
+            }
+            return flights;
+        }
+        public IList<FlightWithNames> GetUpcomingDepartures(string key, string value)
+        {
+            string preText = ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString;
+            IList<FlightWithNames> flights = new List<FlightWithNames>();
+            string query = "";
+            if (key == "ID")
+            {
+                query = preText + "Flights." + key + "=" + value;
+            }
+            else if (key == "AIRLINE_NAME")
+            {
+                query = preText + "AirlineCompanies." + key + "='" + value + "'";
+            }
+            else if (key == "ORIGIN_COUNTRY")
+            {
+                query = "Origin.COUNTRY_NAME='" + value + "'";
+            }
+            else if (key == "DESTINATION_COUNTRY")
+            {
+                query = "Destination.COUNTRY_NAME='" + value + "'";
+            }
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(
+                        $"SELECT {preText}Flights.ID, Origin.COUNTRY_NAME AS ORIGIN_COUNTRY, Destination.COUNTRY_NAME AS DESTINATION_COUNTRY, {preText}Flights.DEPARTURE_TIME, {preText}Flights.LANDING_TIME, {preText}AirlineCompanies.AIRLINE_NAME " +
+                        $"FROM {preText}Flights " +
+                        $"LEFT JOIN {preText}AirlineCompanies ON {preText}Flights.AIRLINE_COMPANY_ID = {preText}AirlineCompanies.ID " +
+                        $"LEFT JOIN {preText}Countries AS Origin ON {preText}Flights.ORIGIN_COUNTRY_ID = Origin.ID " +
+                        $"LEFT JOIN {preText}Countries AS Destination ON {preText}Flights.DESTINATION_COUNTRY_ID = Destination.ID " +
+                        $"WHERE DATEDIFF(HOUR, '{DateTime.Now.ToString(dateFormat)}', DEPARTURE_TIME) <= 12 AND DATEDIFF(HOUR, '{DateTime.Now.ToString(dateFormat)}', DEPARTURE_TIME) > 0 AND {query}" +
+                        $"ORDER BY {preText}Flights.DEPARTURE_TIME;"
+                        , conn))
+                {
+                        cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        FlightWithNames c = new FlightWithNames((int)reader["ID"], (string)reader["AIRLINE_NAME"], (string)reader["ORIGIN_COUNTRY"], (string)reader["DESTINATION_COUNTRY"], (DateTime)reader["DEPARTURE_TIME"], (DateTime)reader["LANDING_TIME"]);
+                        flights.Add(c);
+                    }
+                    cmd.Connection.Close();
+                }
+            }
+            return flights;
+        }
+        public IList<FlightWithNames> GetUpcomingLandings()
+        {
+            string preText = ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString;
+            IList<FlightWithNames> flights = new List<FlightWithNames>();
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(
+                        $"SELECT {preText}Flights.ID, Origin.COUNTRY_NAME AS ORIGIN_COUNTRY, Destination.COUNTRY_NAME AS DESTINATION_COUNTRY, {preText}Flights.DEPARTURE_TIME, {preText}Flights.LANDING_TIME, {preText}AirlineCompanies.AIRLINE_NAME " +
+                        $"FROM {preText}Flights " +
+                        $"LEFT JOIN {preText}AirlineCompanies ON {preText}Flights.AIRLINE_COMPANY_ID = {preText}AirlineCompanies.ID " +
+                        $"LEFT JOIN {preText}Countries AS Origin ON {preText}Flights.ORIGIN_COUNTRY_ID = Origin.ID " +
+                        $"LEFT JOIN {preText}Countries AS Destination ON {preText}Flights.DESTINATION_COUNTRY_ID = Destination.ID " +
+                        $"WHERE DATEDIFF(HOUR, '{DateTime.Now.ToString(dateFormat)}', LANDING_TIME) <= 12 AND DATEDIFF(HOUR, '{DateTime.Now.ToString(dateFormat)}', LANDING_TIME) > -4 " +
+                        $"ORDER BY {preText}Flights.LANDING_TIME;"
+                        , conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        FlightWithNames c = new FlightWithNames((int)reader["ID"], (string)reader["AIRLINE_NAME"], (string)reader["ORIGIN_COUNTRY"], (string)reader["DESTINATION_COUNTRY"], (DateTime)reader["DEPARTURE_TIME"], (DateTime)reader["LANDING_TIME"]);
+                        flights.Add(c);
+                    }
+                    cmd.Connection.Close();
+                }
+            }
+            return flights;
+        }
+        public IList<FlightWithNames> GetUpcomingLandings(string key, string value)
+        {
+            string preText = ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString;
+            IList<FlightWithNames> flights = new List<FlightWithNames>();
+            string query = "";
+            if (key == "ID")
+            {
+                query = preText + "Flights." + key + "=" + value;
+            }
+            else if (key == "AIRLINE_NAME")
+            {
+                query = preText + "AirlineCompanies." + key + "='" + value + "'";
+            }
+            else if (key == "ORIGIN_COUNTRY")
+            {
+                query = "Origin.COUNTRY_NAME='" + value + "'";
+            }
+            else if (key == "DESTINATION_COUNTRY")
+            {
+                query = "Destination.COUNTRY_NAME='" + value + "'";
+            }
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                string s = preText+"Flights."+query;
+                using (SqlCommand cmd = new SqlCommand(
+                        $"SELECT {preText}Flights.ID, Origin.COUNTRY_NAME AS ORIGIN_COUNTRY, Destination.COUNTRY_NAME AS DESTINATION_COUNTRY, {preText}Flights.DEPARTURE_TIME, {preText}Flights.LANDING_TIME, {preText}AirlineCompanies.AIRLINE_NAME " +
+                        $"FROM {preText}Flights " +
+                        $"LEFT JOIN {preText}AirlineCompanies ON {preText}Flights.AIRLINE_COMPANY_ID = {preText}AirlineCompanies.ID " +
+                        $"LEFT JOIN {preText}Countries AS Origin ON {preText}Flights.ORIGIN_COUNTRY_ID = Origin.ID " +
+                        $"LEFT JOIN {preText}Countries AS Destination ON {preText}Flights.DESTINATION_COUNTRY_ID = Destination.ID " +
+                        $"WHERE DATEDIFF(HOUR, '{DateTime.Now.ToString(dateFormat)}', LANDING_TIME) <= 12 AND DATEDIFF(HOUR, '{DateTime.Now.ToString(dateFormat)}', LANDING_TIME) > -4 AND {query} " +
+                        $"ORDER BY {preText}Flights.LANDING_TIME;"
+                        , conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        FlightWithNames c = new FlightWithNames((int)reader["ID"], (string)reader["AIRLINE_NAME"], (string)reader["ORIGIN_COUNTRY"], (string)reader["DESTINATION_COUNTRY"], (DateTime)reader["DEPARTURE_TIME"], (DateTime)reader["LANDING_TIME"]);
+                        flights.Add(c);
+                    }
+                    cmd.Connection.Close();
+                }
+            }
+            return flights;
+        }
 
         public IList<Flight> GetAll()
         {
@@ -107,6 +258,20 @@ namespace FlightCenter.DAOs
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand($"DELETE FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Flights WHERE ID={t.ID}", conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    cmd.ExecuteReader();
+                    cmd.Connection.Close();
+                }
+            }
+        }
+
+        public void RemoveAllByAirlineCompany(AirlineCompany airline)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand($"DELETE FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Flights WHERE AIRLINE_COMPANY_ID={airline.ID}", conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection.Open();
@@ -179,10 +344,13 @@ namespace FlightCenter.DAOs
 
         public IList<Flight> GetFlightsByDepatrureDate(DateTime departureDate)
         {
+            //$"SELECT * FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Flights WHERE DEPARTURE_TIME='{departureDate.ToString(dateFormat)}'", conn)
             IList<Flight> flights = new List<Flight>();
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
             {
-                using (SqlCommand cmd = new SqlCommand($"SELECT * FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Flights WHERE DEPARTURE_TIME='{departureDate.ToString(dateFormat)}'", conn))
+                using (SqlCommand cmd = new SqlCommand($"SELECT * FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Flights " +
+                    $"WHERE DEPARTURE_TIME>='{departureDate.ToString(dateFormat)}'" +
+                    $"and DEPARTURE_TIME<'{departureDate.AddDays(1).ToString(dateFormat)}'", conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection.Open();
@@ -224,7 +392,9 @@ namespace FlightCenter.DAOs
             IList<Flight> flights = new List<Flight>();
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
             {
-                using (SqlCommand cmd = new SqlCommand($"SELECT * FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Flights WHERE LANDING_TIME='{landingDate.ToString(dateFormat)}'", conn))
+                using (SqlCommand cmd = new SqlCommand($"SELECT * FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Flights " +
+                $"WHERE LANDING_TIME>='{landingDate.ToString(dateFormat)}'" +
+                $"and LANDING_TIME<'{landingDate.AddDays(1).ToString(dateFormat)}'", conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection.Open();
@@ -278,6 +448,20 @@ namespace FlightCenter.DAOs
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand($"UPDATE {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Flights SET REMAINING_TICKETS = REMAINING_TICKETS+1 WHERE Flights.ID = {t.FlightID}", conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    cmd.ExecuteReader();
+                    cmd.Connection.Close();
+                }
+            }
+        }
+
+        public void RemoveAll()
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand($"DELETE FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Flights", conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection.Open();

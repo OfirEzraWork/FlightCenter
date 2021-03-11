@@ -13,5 +13,6 @@ namespace FlightCenter.DAOs
         void Add(T t);
         void Remove(T t);
         void Update(T t);
+        void RemoveAll();
     }
 }

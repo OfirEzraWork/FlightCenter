@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlightCenter.DAOs;
-using FlightCenter.POCO;
 
 namespace FlightCenter
 {

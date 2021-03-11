@@ -58,6 +58,26 @@ namespace FlightCenter.DAOs
             }
             return null;
         }
+        public Country GetCountryByName(string name)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand($"SELECT * FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Countries WHERE COUNTRY_NAME='{name}'", conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        Country c = new Country((int)reader["ID"], (string)reader["COUNTRY_NAME"]);
+                        cmd.Connection.Close();
+                        return c;
+                    }
+                    cmd.Connection.Close();
+                }
+            }
+            return null;
+        }
 
         public IList<Country> GetAll()
         {
@@ -101,6 +121,20 @@ namespace FlightCenter.DAOs
                 using (SqlCommand cmd = new SqlCommand($"UPDATE {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Countries SET" +
                     $" COUNTRY_NAME = '{t.CountryName}'" +
                     $" WHERE Countries.ID = {t.ID}", conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    cmd.ExecuteReader();
+                    cmd.Connection.Close();
+                }
+            }
+        }
+
+        public void RemoveAll()
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand($"DELETE FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}Countries", conn))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Connection.Open();

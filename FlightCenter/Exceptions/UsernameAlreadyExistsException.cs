@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace FlightCenter.Facades
 {
     [Serializable]
-    internal class UsernameAlreadyExistsException : Exception
+    public class UsernameAlreadyExistsException : Exception
     {
         public UsernameAlreadyExistsException()
         {

@@ -136,6 +136,20 @@ namespace FlightCenter.DAOs
             }
         }
 
+        public void RemoveAll()
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand($"DELETE FROM {ConfigurationManager.ConnectionStrings["PreTableText"].ConnectionString}AirlineCompanies", conn))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection.Open();
+                    cmd.ExecuteReader();
+                    cmd.Connection.Close();
+                }
+            }
+        }
+
         public void Update(AirlineCompany t)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLServer"].ConnectionString))

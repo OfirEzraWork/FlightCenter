@@ -16,5 +16,9 @@ namespace FlightCenter.Facades
         IList<Flight> GetFlightsByDestinationCountry(int countryCode);
         IList<Flight> GetFlightsByDepatrureDate(DateTime departureDate);
         IList<Flight> GetFlightsByLandingDate(DateTime landingDate);
+        IList<FlightWithNames> GetUpcomingDepatrures();
+        IList<FlightWithNames> GetUpcomingDepatrures(string key, string value);
+        IList<FlightWithNames> GetUpcomingLandings();
+        IList<FlightWithNames> GetUpcomingLandings(string key, string value);
     }
 }
